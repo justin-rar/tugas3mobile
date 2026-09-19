@@ -2,6 +2,7 @@
 // Form tambah/edit orang (PRD F5)
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 import '../../core/app_exception.dart';
@@ -136,10 +137,16 @@ class _OrangFormScreenState extends State<OrangFormScreen> {
               // Nama
               TextFormField(
                 controller: _namaCtrl,
+                maxLength: 30,
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp(r"[a-zA-Z0-9\s'.-]")),
+                  LengthLimitingTextInputFormatter(30),
+                ],
                 decoration: const InputDecoration(
                   labelText: 'Nama',
                   prefixIcon: Icon(Icons.person_outlined),
                   border: OutlineInputBorder(),
+                  helperText: 'Maks. 30 karakter (huruf, angka, spasi, petik)',
                 ),
                 validator: Validators.nama,
                 textInputAction: TextInputAction.done,

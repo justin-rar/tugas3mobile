@@ -45,8 +45,12 @@ class Validators {
     if (trimmed.length < 2) {
       return 'Nama minimal 2 karakter.';
     }
-    if (trimmed.length > 50) {
-      return 'Nama maksimal 50 karakter.';
+    if (trimmed.length > 30) {
+      return 'Nama maksimal 30 karakter.';
+    }
+    final validCharRegex = RegExp(r"^[a-zA-Z0-9\s'.-]+$");
+    if (!validCharRegex.hasMatch(trimmed)) {
+      return 'Nama hanya boleh berisi huruf, angka, spasi, petik satu (\'), titik, atau tanda hubung.';
     }
     return null;
   }

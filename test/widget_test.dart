@@ -8,10 +8,28 @@ import 'package:tugas3/screens/kalender/kalender_screen.dart';
 import 'package:tugas3/screens/hijriah/hijriah_screen.dart';
 import 'package:tugas3/screens/umur/umur_screen.dart';
 import 'package:tugas3/utils/kalender_util.dart';
+import 'package:tugas3/utils/validators.dart';
 
 void main() {
   setUpAll(() async {
     await initializeDateFormatting('id_ID', null);
+  });
+
+  group('Validators.nama', () {
+    test('Nama valid dengan petik, angka, titik, strip', () {
+      expect(Validators.nama("Ma'aruf"), isNull);
+      expect(Validators.nama("M. Ma'aruf"), isNull);
+      expect(Validators.nama("Siti-Aminah"), isNull);
+      expect(Validators.nama("Ahmad 123"), isNull);
+    });
+
+    test('Nama tidak valid jika terlalu pendek, terlalu panjang, atau simbol liar', () {
+      expect(Validators.nama(""), isNotNull);
+      expect(Validators.nama("A"), isNotNull);
+      expect(Validators.nama("Nama Ini Sangat Panjang Melebihi Batas Tiga Puluh Karakter"), isNotNull);
+      expect(Validators.nama("Ma'aruf<script>"), isNotNull);
+      expect(Validators.nama("User@123"), isNotNull);
+    });
   });
 
   group('Kalender & Date Logic', () {
