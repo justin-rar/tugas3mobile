@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../../core/app_exception.dart';
 import '../../services/auth_service.dart';
 import '../../utils/validators.dart';
+import '../shell/main_shell.dart';
 import 'register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -35,7 +36,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
     try {
       await _authService.login(_emailCtrl.text, _passwordCtrl.text);
-      // AuthGate di main.dart akan otomatis navigasi ke MainShell
+      if (!mounted) return;
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (_) => const MainShell()),
+        (_) => false,
+      );
     } on AppException catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(

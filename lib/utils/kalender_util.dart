@@ -78,8 +78,8 @@ class KalenderUtil {
 
   static Weton hitungWeton(DateTime tgl) {
     final selisih = _selisihHari(tgl);
-    final idxWuku = (selisih % 210) ~/ 7; // Dart: % selalu >= 0
-    final idxPasaran = (selisih + 1) % 5; // +1 karena epoch = Pahing
+    final idxWuku = (((selisih % 210) + 210) % 210) ~/ 7;
+    final idxPasaran = (((selisih + 1) % 5) + 5) % 5;
     final idxHari = tgl.weekday - 1;
     return Weton(
       namaHari[idxHari],
@@ -98,11 +98,13 @@ class KalenderUtil {
     final batas = nyepi ?? DateTime.utc(tgl.year, 3, 15);
     final tglUtc = DateTime.utc(tgl.year, tgl.month, tgl.day);
     final tahunSaka = tglUtc.isBefore(batas) ? tgl.year - 79 : tgl.year - 78;
+    final idxWuku = (((selisih % 210) + 210) % 210) ~/ 7;
+    final idxPasaran = (((selisih + 1) % 5) + 5) % 5;
     return SakaBali(
       tahunSaka,
       _saptawaraBali[tgl.weekday - 1],
-      _pancawaraBali[(selisih + 1) % 5],
-      wuku[(selisih % 210) ~/ 7],
+      _pancawaraBali[idxPasaran],
+      wuku[idxWuku],
     );
   }
 

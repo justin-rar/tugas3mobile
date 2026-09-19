@@ -12,6 +12,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -155,9 +156,15 @@ class HariBaikApp extends StatelessWidget {
       ),
       // Locale Indonesia untuk DatePicker dll.
       localizationsDelegates: const [
-        DefaultMaterialLocalizations.delegate,
-        DefaultWidgetsLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
       ],
+      supportedLocales: const [
+        Locale('id', 'ID'),
+        Locale('en', 'US'),
+      ],
+      locale: const Locale('id', 'ID'),
       home: const AuthGate(),
     );
   }
@@ -175,13 +182,19 @@ class AuthGate extends StatefulWidget {
 
 class _AuthGateState extends State<AuthGate> {
   late final StreamSubscription<AuthState> _authSub;
+  Session? _session;
 
   @override
   void initState() {
     super.initState();
+    _session = Supabase.instance.client.auth.currentSession;
     _authSub =
         Supabase.instance.client.auth.onAuthStateChange.listen((data) {
       if (!mounted) return;
+
+      setState(() {
+        _session = data.session;
+      });
 
       if (data.event == AuthChangeEvent.signedOut) {
         Navigator.of(context).pushAndRemoveUntil(
@@ -205,8 +218,7 @@ class _AuthGateState extends State<AuthGate> {
 
   @override
   Widget build(BuildContext context) {
-    final session = Supabase.instance.client.auth.currentSession;
-    if (session != null) return const MainShell();
+    if (_session != null) return const MainShell();
     return const LoginScreen();
   }
 }
