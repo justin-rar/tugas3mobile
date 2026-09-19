@@ -55,8 +55,8 @@ flutter pub get
    ```
 2. Isi file `.env` tersebut dengan kredensial Supabase:
    ```env
-   SUPABASE_URL=https://apjpnqvxjkmrojlojsqv.supabase.co
-   SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+   SUPABASE_URL=https:/xxxxx.supabase.co
+   SUPABASE_ANON_KEY=xxxxxxx
    ```
    > 💡 **Catatan:** Minta isi lengkap `SUPABASE_URL` dan `SUPABASE_ANON_KEY` ke teman kelompok pemilik project Supabase.
 
